@@ -1,0 +1,569 @@
+/* ============================================================
+   CSS Custom Properties — Light & Dark Themes
+   ============================================================ */
+:root {
+  --bg-page:        #f0f2f5;
+  --bg-card:        #ffffff;
+  --bg-header:      #ffffff;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #555577;
+  --text-muted:     #888899;
+  --accent:         #6c63ff;
+  --accent-hover:   #574fd6;
+  --accent-2:       #43b89c;
+  --danger:         #e74c3c;
+  --danger-hover:   #c0392b;
+  --warning-bg:     #fff3cd;
+  --warning-text:   #856404;
+  --warning-border: #ffc107;
+  --over-limit-bg:  #fdecea;
+  --over-limit-border: #e74c3c;
+  --border:         #e0e0ee;
+  --shadow:         0 2px 12px rgba(0,0,0,0.07);
+  --radius:         12px;
+  --radius-sm:      8px;
+  --font:           'Segoe UI', system-ui, -apple-system, sans-serif;
+  --transition:     0.2s ease;
+}
+
+[data-theme="dark"] {
+  --bg-page:        #0f0f1a;
+  --bg-card:        #1a1a2e;
+  --bg-header:      #16213e;
+  --text-primary:   #e8e8f0;
+  --text-secondary: #a0a0c0;
+  --text-muted:     #6060a0;
+  --accent:         #7c73ff;
+  --accent-hover:   #9d96ff;
+  --accent-2:       #4ecdc4;
+  --danger:         #ff6b6b;
+  --danger-hover:   #ff4444;
+  --warning-bg:     #3a2e00;
+  --warning-text:   #ffd166;
+  --warning-border: #ffd166;
+  --over-limit-bg:  #2e1a1a;
+  --over-limit-border: #ff6b6b;
+  --border:         #2a2a4a;
+  --shadow:         0 2px 12px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ============================================================
+   Storage Warning Banner
+   ============================================================ */
+.storage-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--warning-bg);
+  color: var(--warning-text);
+  border-bottom: 2px solid var(--warning-border);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.storage-banner button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--warning-text);
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.storage-banner button:hover { opacity: 0.7; }
+
+/* ============================================================
+   Browser Compatibility Warning
+   ============================================================ */
+.compat-warning {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #333;
+  padding: 40px;
+  text-align: center;
+  gap: 16px;
+}
+
+.compat-warning h2 { font-size: 1.6rem; color: #c0392b; }
+.compat-warning p  { font-size: 1rem; max-width: 480px; }
+.compat-warning ul { list-style: disc; text-align: left; margin-top: 8px; }
+.compat-warning li { font-family: monospace; font-size: 0.95rem; margin: 4px 0; }
+
+/* ============================================================
+   Utility
+   ============================================================ */
+.hidden { display: none !important; }
+
+/* ============================================================
+   Header
+   ============================================================ */
+.app-header {
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.header-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+.app-header h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.balance-display {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+#balance-amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ============================================================
+   Theme Toggle
+   ============================================================ */
+.theme-toggle {
+  background: var(--bg-page);
+  border: 1.5px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+
+.theme-toggle:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   Main Layout
+   ============================================================ */
+.app-main {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: 20px;
+  padding: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .app-main { grid-template-columns: 260px 1fr; }
+  .right-col { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+}
+
+@media (max-width: 720px) {
+  .app-main { grid-template-columns: 1fr; padding: 16px; }
+  .right-col { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.left-col { display: flex; flex-direction: column; gap: 20px; }
+.right-col { display: flex; flex-direction: column; gap: 20px; }
+
+/* ============================================================
+   Forms
+   ============================================================ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-group input,
+.form-group select {
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: var(--font);
+  transition: border-color var(--transition), background var(--transition);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition), transform 0.1s;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-primary  { background: var(--accent);  color: #fff; }
+.btn-primary:hover:not(:disabled)  { background: var(--accent-hover); }
+
+.btn-secondary { background: var(--accent-2); color: #fff; }
+.btn-secondary:hover:not(:disabled) { opacity: 0.85; }
+
+/* ============================================================
+   Error & Cap Messages
+   ============================================================ */
+.error-msg {
+  font-size: 0.82rem;
+  color: var(--danger);
+  min-height: 18px;
+  margin-bottom: 4px;
+}
+
+.cap-msg {
+  font-size: 0.82rem;
+  color: var(--danger);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ============================================================
+   Transaction List
+   ============================================================ */
+.transaction-card { height: 100%; }
+
+.transaction-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.transaction-header h2 { margin: 0; padding: 0; border: none; }
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.sort-control select {
+  padding: 5px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-family: var(--font);
+  cursor: pointer;
+  outline: none;
+}
+
+.transaction-list {
+  list-style: none;
+  max-height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.transaction-list::-webkit-scrollbar { width: 5px; }
+.transaction-list::-webkit-scrollbar-track { background: transparent; }
+.transaction-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.transaction-item.over-limit {
+  background: var(--over-limit-bg);
+  border-color: var(--over-limit-border);
+}
+
+.transaction-info { flex: 1; min-width: 0; }
+
+.transaction-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.transaction-amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.category-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.transaction-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.delete-btn {
+  background: none;
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  padding: 24px 0;
+}
+
+/* ============================================================
+   Spending Limits
+   ============================================================ */
+.limit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.limit-item label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.limit-item input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.limit-item input:focus { border-color: var(--accent); }
+
+.limit-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* ============================================================
+   Pie Chart
+   ============================================================ */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0;
+}
+
+#pie-chart { max-width: 100%; }
+
+.chart-fallback {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Monthly Summary
+   ============================================================ */
+.summary-results { margin-top: 14px; }
+
+.summary-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  font-size: 0.85rem;
+}
+
+.summary-total {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.summary-total strong { color: var(--accent); font-size: 1rem; }

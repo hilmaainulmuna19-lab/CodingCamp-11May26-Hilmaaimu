@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Storage Error Warning Banner -->
+  <div id="storage-error" class="storage-banner hidden" role="alert" aria-live="assertive">
+    <span id="storage-error-msg"></span>
+    <button id="storage-error-close" aria-label="Dismiss warning">&times;</button>
+  </div>
+
+  <!-- Browser Compatibility Warning (shown only when APIs are missing) -->
+  <div id="compat-warning" class="compat-warning hidden" role="alert">
+    <h2>Browser Not Supported</h2>
+    <p>Your browser is missing required features. Please upgrade to a modern browser (Chrome, Firefox, Edge, or Safari).</p>
+    <ul id="compat-missing-list"></ul>
+  </div>
+
+  <!-- Main App (hidden until compat check passes) -->
+  <div id="app">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1>💰 Expense &amp; Budget Visualizer</h1>
+        <div id="balance-display" class="balance-display">
+          Total: <span id="balance-amount">$0.00</span>
+        </div>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">🌙 Dark Mode</button>
+    </header>
+
+    <main class="app-main">
+
+      <!-- Left Column -->
+      <section class="left-col">
+
+        <!-- Input Form -->
+        <div class="card">
+          <h2>Add Transaction</h2>
+          <form id="input-form" novalidate>
+            <div class="form-group">
+              <label for="item-name">Item Name</label>
+              <input type="text" id="item-name" placeholder="e.g. Lunch" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount ($)</label>
+              <input type="number" id="amount" placeholder="0.00" min="0.01" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label for="category-select">Category</label>
+              <select id="category-select">
+                <option value="">-- Select Category --</option>
+              </select>
+            </div>
+            <div id="form-error" class="error-msg" role="alert" aria-live="polite"></div>
+            <button type="submit" id="add-btn" class="btn btn-primary">Add Transaction</button>
+            <div id="cap-msg" class="cap-msg hidden">Transaction limit (500) reached. Delete some to add more.</div>
+          </form>
+        </div>
+
+        <!-- Category Manager -->
+        <div class="card">
+          <h2>Custom Categories</h2>
+          <div id="category-manager">
+            <div class="form-group">
+              <label for="new-category-input">New Category</label>
+              <input type="text" id="new-category-input" placeholder="e.g. Healthcare" maxlength="50" autocomplete="off" />
+            </div>
+            <div id="category-error" class="error-msg" role="alert" aria-live="polite"></div>
+            <button id="add-category-btn" class="btn btn-secondary">Add Category</button>
+          </div>
+        </div>
+
+        <!-- Spending Limits -->
+        <div class="card">
+          <h2>Spending Limits</h2>
+          <div id="limit-manager"></div>
+        </div>
+
+      </section>
+
+      <!-- Middle Column -->
+      <section class="middle-col">
+
+        <!-- Transaction List -->
+        <div class="card transaction-card">
+          <div class="transaction-header">
+            <h2>Transactions</h2>
+            <div class="sort-control" id="sort-control">
+              <label for="sort-select">Sort by:</label>
+              <select id="sort-select">
+                <option value="">Default</option>
+                <option value="amount-asc">Amount ↑</option>
+                <option value="amount-desc">Amount ↓</option>
+                <option value="category-asc">Category A–Z</option>
+              </select>
+            </div>
+          </div>
+          <ul id="transaction-list" class="transaction-list" aria-label="Transaction list"></ul>
+        </div>
+
+      </section>
+
+      <!-- Right Column -->
+      <section class="right-col">
+
+        <!-- Pie Chart -->
+        <div class="card">
+          <h2>Spending by Category</h2>
+          <div class="chart-container">
+            <canvas id="pie-chart" width="260" height="260" aria-label="Spending pie chart" role="img"></canvas>
+            <p id="chart-fallback" class="chart-fallback hidden">Chart unavailable in this browser.</p>
+          </div>
+          <div id="chart-legend" class="chart-legend"></div>
+        </div>
+
+        <!-- Monthly Summary -->
+        <div class="card">
+          <h2>Monthly Summary</h2>
+          <div id="monthly-summary">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="month-select">Month</label>
+                <select id="month-select">
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="year-input">Year</label>
+                <input type="number" id="year-input" min="2015" max="2035" step="1" />
+              </div>
+            </div>
+            <button id="apply-summary-btn" class="btn btn-secondary">View Summary</button>
+            <div class="summary-results">
+              <ul id="summary-list" class="summary-list"></ul>
+              <p id="summary-empty" class="empty-msg hidden">No transactions found for this period.</p>
+              <p id="summary-total" class="summary-total hidden">Total: <strong id="summary-total-amount">$0.00</strong></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div><!-- /#app -->
+
+  <script src="js/app.js"></script>
+</body>
+</html>
