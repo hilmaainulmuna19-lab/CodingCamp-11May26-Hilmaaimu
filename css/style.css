@@ -11,6 +11,14 @@
   --accent:         #6c63ff;
   --accent-hover:   #574fd6;
   --accent-2:       #43b89c;
+  --income-color:   #27ae60;
+  --income-bg:      #eafaf1;
+  --income-border:  #a9dfbf;
+  --expense-color:  #e74c3c;
+  --expense-bg:     #fdecea;
+  --expense-border: #f1948a;
+  --balance-pos:    #27ae60;
+  --balance-neg:    #e74c3c;
   --danger:         #e74c3c;
   --danger-hover:   #c0392b;
   --warning-bg:     #fff3cd;
@@ -36,6 +44,14 @@
   --accent:         #7c73ff;
   --accent-hover:   #9d96ff;
   --accent-2:       #4ecdc4;
+  --income-color:   #2ecc71;
+  --income-bg:      #0d2b1a;
+  --income-border:  #1a5c35;
+  --expense-color:  #ff6b6b;
+  --expense-bg:     #2e1a1a;
+  --expense-border: #7a2020;
+  --balance-pos:    #2ecc71;
+  --balance-neg:    #ff6b6b;
   --danger:         #ff6b6b;
   --danger-hover:   #ff4444;
   --warning-bg:     #3a2e00;
@@ -51,9 +67,7 @@
    Reset & Base
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; }
-
 body {
   font-family: var(--font);
   background: var(--bg-page);
@@ -80,38 +94,24 @@ body {
   font-size: 0.9rem;
   font-weight: 500;
 }
-
 .storage-banner button {
-  background: none;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: var(--warning-text);
-  line-height: 1;
-  padding: 0 4px;
-  flex-shrink: 0;
+  background: none; border: none;
+  font-size: 1.3rem; cursor: pointer;
+  color: var(--warning-text); line-height: 1;
+  padding: 0 4px; flex-shrink: 0;
 }
-
 .storage-banner button:hover { opacity: 0.7; }
 
 /* ============================================================
    Browser Compatibility Warning
    ============================================================ */
 .compat-warning {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  color: #333;
-  padding: 40px;
-  text-align: center;
-  gap: 16px;
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #fff; color: #333;
+  padding: 40px; text-align: center; gap: 16px;
 }
-
 .compat-warning h2 { font-size: 1.6rem; color: #c0392b; }
 .compat-warning p  { font-size: 1rem; max-width: 480px; }
 .compat-warning ul { list-style: disc; text-align: left; margin-top: 8px; }
@@ -140,26 +140,73 @@ body {
   z-index: 100;
   transition: background var(--transition), border-color var(--transition);
 }
-
 .header-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-
 .app-header h1 {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--accent);
-  white-space: nowrap;
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--accent); white-space: nowrap;
 }
 
-.balance-display {
-  font-size: 1rem;
-  color: var(--text-secondary);
+/* ============================================================
+   Summary Bar (Income / Expense / Balance cards)
+   ============================================================ */
+.summary-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 24px 0;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-#balance-amount {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--accent);
+@media (max-width: 600px) {
+  .summary-bar { grid-template-columns: 1fr; padding: 16px 16px 0; }
 }
+
+.summary-card {
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--border);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.summary-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  opacity: 0.75;
+}
+
+.summary-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.summary-income {
+  background: var(--income-bg);
+  border-color: var(--income-border);
+}
+.summary-income .summary-label { color: var(--income-color); }
+.summary-income .summary-value { color: var(--income-color); }
+
+.summary-expense {
+  background: var(--expense-bg);
+  border-color: var(--expense-border);
+}
+.summary-expense .summary-label { color: var(--expense-color); }
+.summary-expense .summary-value { color: var(--expense-color); }
+
+.summary-balance {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+.summary-balance .summary-label { color: var(--text-secondary); }
+.summary-balance .summary-value { color: var(--accent); }
+.summary-balance .summary-value.positive { color: var(--balance-pos); }
+.summary-balance .summary-value.negative { color: var(--balance-neg); }
 
 /* ============================================================
    Theme Toggle
@@ -176,12 +223,7 @@ body {
   transition: background var(--transition), border-color var(--transition), color var(--transition);
   white-space: nowrap;
 }
-
-.theme-toggle:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
+.theme-toggle:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 /* ============================================================
    Main Layout
@@ -190,7 +232,7 @@ body {
   display: grid;
   grid-template-columns: 280px 1fr 320px;
   gap: 20px;
-  padding: 24px;
+  padding: 20px 24px 24px;
   max-width: 1280px;
   margin: 0 auto;
   align-items: start;
@@ -200,7 +242,6 @@ body {
   .app-main { grid-template-columns: 260px 1fr; }
   .right-col { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 }
-
 @media (max-width: 720px) {
   .app-main { grid-template-columns: 1fr; padding: 16px; }
   .right-col { grid-template-columns: 1fr; }
@@ -217,37 +258,27 @@ body {
   box-shadow: var(--shadow);
   transition: background var(--transition), border-color var(--transition);
 }
-
 .card h2 {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1rem; font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 16px; padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
-
-.left-col { display: flex; flex-direction: column; gap: 20px; }
+.left-col  { display: flex; flex-direction: column; gap: 20px; }
 .right-col { display: flex; flex-direction: column; gap: 20px; }
 
 /* ============================================================
    Forms
    ============================================================ */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 12px;
+  display: flex; flex-direction: column;
+  gap: 5px; margin-bottom: 12px;
 }
-
 .form-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.8rem; font-weight: 600;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: uppercase; letter-spacing: 0.04em;
 }
-
 .form-group input,
 .form-group select {
   padding: 9px 12px;
@@ -255,49 +286,33 @@ body {
   border-radius: var(--radius-sm);
   background: var(--bg-page);
   color: var(--text-primary);
-  font-size: 0.9rem;
-  font-family: var(--font);
+  font-size: 0.9rem; font-family: var(--font);
   transition: border-color var(--transition), background var(--transition);
   outline: none;
 }
-
 .form-group input:focus,
 .form-group select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
 }
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 /* ============================================================
    Buttons
    ============================================================ */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 18px;
-  border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 18px; border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-family: var(--font);
+  font-size: 0.9rem; font-weight: 600; font-family: var(--font);
   cursor: pointer;
   transition: background var(--transition), opacity var(--transition), transform 0.1s;
-  width: 100%;
-  margin-top: 4px;
+  width: 100%; margin-top: 4px;
 }
-
 .btn:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.btn-primary  { background: var(--accent);  color: #fff; }
-.btn-primary:hover:not(:disabled)  { background: var(--accent-hover); }
-
+.btn-primary  { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
 .btn-secondary { background: var(--accent-2); color: #fff; }
 .btn-secondary:hover:not(:disabled) { opacity: 0.85; }
 
@@ -305,17 +320,12 @@ body {
    Error & Cap Messages
    ============================================================ */
 .error-msg {
-  font-size: 0.82rem;
-  color: var(--danger);
-  min-height: 18px;
-  margin-bottom: 4px;
+  font-size: 0.82rem; color: var(--danger);
+  min-height: 18px; margin-bottom: 4px;
 }
-
 .cap-msg {
-  font-size: 0.82rem;
-  color: var(--danger);
-  margin-top: 8px;
-  text-align: center;
+  font-size: 0.82rem; color: var(--danger);
+  margin-top: 8px; text-align: center;
 }
 
 /* ============================================================
@@ -324,107 +334,94 @@ body {
 .transaction-card { height: 100%; }
 
 .transaction-header {
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-bottom: 10px;
+  flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px; padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
-
 .transaction-header h2 { margin: 0; padding: 0; border: none; }
 
 .sort-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
+  display: flex; align-items: center;
+  gap: 8px; font-size: 0.82rem;
   color: var(--text-secondary);
 }
-
 .sort-control select {
   padding: 5px 8px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-page);
   color: var(--text-primary);
-  font-size: 0.82rem;
-  font-family: var(--font);
-  cursor: pointer;
-  outline: none;
+  font-size: 0.82rem; font-family: var(--font);
+  cursor: pointer; outline: none;
 }
 
 .transaction-list {
   list-style: none;
-  max-height: 480px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  max-height: 480px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
   padding-right: 4px;
 }
-
 .transaction-list::-webkit-scrollbar { width: 5px; }
 .transaction-list::-webkit-scrollbar-track { background: transparent; }
 .transaction-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .transaction-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 10px;
   padding: 10px 14px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-page);
   transition: border-color var(--transition), background var(--transition);
 }
-
+.transaction-item.is-income {
+  border-left: 4px solid var(--income-color);
+}
+.transaction-item.is-expense {
+  border-left: 4px solid var(--expense-color);
+}
 .transaction-item.over-limit {
   background: var(--over-limit-bg);
   border-color: var(--over-limit-border);
 }
 
 .transaction-info { flex: 1; min-width: 0; }
-
 .transaction-name {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.9rem; font-weight: 600;
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-
 .transaction-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 3px;
+  display: flex; align-items: center;
+  gap: 8px; margin-top: 3px;
 }
 
 .transaction-amount {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--accent);
+  font-size: 0.95rem; font-weight: 700;
   white-space: nowrap;
 }
+.transaction-amount.income  { color: var(--income-color); }
+.transaction-amount.expense { color: var(--expense-color); }
+
+.type-badge {
+  font-size: 0.68rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 20px;
+  white-space: nowrap; text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.type-badge.income  { background: var(--income-color);  color: #fff; }
+.type-badge.expense { background: var(--expense-color); color: #fff; }
 
 .category-badge {
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-  background: var(--accent);
-  color: #fff;
+  font-size: 0.72rem; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px;
+  background: var(--accent); color: #fff;
   white-space: nowrap;
 }
-
 .transaction-date {
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 0.72rem; color: var(--text-muted);
 }
 
 .delete-btn {
@@ -433,105 +430,69 @@ body {
   color: var(--danger);
   border-radius: var(--radius-sm);
   padding: 4px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.78rem; font-weight: 600;
   cursor: pointer;
   transition: background var(--transition), color var(--transition);
   flex-shrink: 0;
 }
-
-.delete-btn:hover {
-  background: var(--danger);
-  color: #fff;
-}
+.delete-btn:hover { background: var(--danger); color: #fff; }
 
 .empty-msg {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.88rem;
-  padding: 24px 0;
+  text-align: center; color: var(--text-muted);
+  font-size: 0.88rem; padding: 24px 0;
 }
 
 /* ============================================================
    Spending Limits
    ============================================================ */
 .limit-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  display: flex; align-items: center;
+  gap: 10px; margin-bottom: 10px;
 }
-
 .limit-item label {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.82rem; font-weight: 600;
   color: var(--text-secondary);
-  min-width: 80px;
-  flex-shrink: 0;
+  min-width: 80px; flex-shrink: 0;
 }
-
 .limit-item input {
-  flex: 1;
-  padding: 7px 10px;
+  flex: 1; padding: 7px 10px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--bg-page);
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  font-family: var(--font);
-  outline: none;
-  transition: border-color var(--transition);
+  background: var(--bg-page); color: var(--text-primary);
+  font-size: 0.85rem; font-family: var(--font);
+  outline: none; transition: border-color var(--transition);
 }
-
 .limit-item input:focus { border-color: var(--accent); }
-
 .limit-empty {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 8px 0;
+  font-size: 0.82rem; color: var(--text-muted);
+  text-align: center; padding: 8px 0;
 }
 
 /* ============================================================
    Pie Chart
    ============================================================ */
 .chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 0;
+  display: flex; justify-content: center;
+  align-items: center; padding: 8px 0;
 }
-
 #pie-chart { max-width: 100%; }
-
 .chart-fallback {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 20px;
+  font-size: 0.85rem; color: var(--text-muted);
+  text-align: center; padding: 20px;
 }
-
 .chart-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  display: flex; flex-wrap: wrap;
+  gap: 8px; margin-top: 12px;
   justify-content: center;
 }
-
 .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.78rem;
+  display: flex; align-items: center;
+  gap: 5px; font-size: 0.78rem;
   color: var(--text-secondary);
 }
-
 .legend-swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  flex-shrink: 0;
+  width: 12px; height: 12px;
+  border-radius: 3px; flex-shrink: 0;
 }
 
 /* ============================================================
@@ -541,29 +502,37 @@ body {
 
 .summary-list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 200px;
-  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 6px;
+  max-height: 200px; overflow-y: auto;
 }
-
 .summary-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 7px 10px;
+  display: flex; justify-content: space-between;
+  align-items: center; padding: 7px 10px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--bg-page);
-  font-size: 0.85rem;
+  background: var(--bg-page); font-size: 0.85rem;
 }
+.summary-item .item-amount.income  { color: var(--income-color);  font-weight: 700; }
+.summary-item .item-amount.expense { color: var(--expense-color); font-weight: 700; }
 
-.summary-total {
-  margin-top: 10px;
-  font-size: 0.9rem;
+.summary-totals {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.summary-row {
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 0.88rem;
   color: var(--text-secondary);
-  text-align: right;
 }
-
-.summary-total strong { color: var(--accent); font-size: 1rem; }
+.summary-row strong { font-size: 0.95rem; }
+.income-row  strong { color: var(--income-color); }
+.expense-row strong { color: var(--expense-color); }
+.balance-row {
+  border-top: 1px dashed var(--border);
+  padding-top: 6px; margin-top: 2px;
+  font-weight: 700; color: var(--text-primary);
+}
+.balance-row strong.positive { color: var(--balance-pos); }
+.balance-row strong.negative { color: var(--balance-neg); }
