@@ -619,9 +619,17 @@ function toggleTheme() {
    HELPERS
    ============================================================ */
 function formatIDR(amount) {
-  // Format: Rp 1.000.000  (Indonesian thousand separator = dot)
+  // Manual formatter — always produces Rp 1.000.000 regardless of browser locale
   const rounded = Math.round(Number(amount));
-  return 'Rp ' + rounded.toLocaleString('id-ID');
+  const isNeg   = rounded < 0;
+  const abs     = Math.abs(rounded).toString();
+  // Insert dots every 3 digits from the right
+  let result = '';
+  for (let i = 0; i < abs.length; i++) {
+    if (i > 0 && (abs.length - i) % 3 === 0) result += '.';
+    result += abs[i];
+  }
+  return (isNeg ? '−Rp ' : 'Rp ') + result;
 }
 
 function escapeHtml(str) {
